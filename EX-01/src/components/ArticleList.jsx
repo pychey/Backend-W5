@@ -1,15 +1,22 @@
 import { useEffect, useState } from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export default function ArticleList() {
   const [articles, setArticles] = useState([]);
-  // Fetch all articles when component mounts
+  const nav = useNavigate();
+
   useEffect(() => {
     fetchArticles();
-  }, []);
+  }, [articles]);
 
   const fetchArticles = async () => {
-    // Fetch articles from the API
+    try {
+      const res = await axios.get('http://localhost:3000/articles');
+      setArticles(res.data.data);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const deleteArticle = async (id) => {
@@ -35,7 +42,7 @@ export default function ArticleList() {
               // Navigate to update article form with article ID /articles/update/${article.id}
             }}>Update</button>
             <button onClick={() => {
-              // Navigate to view article details with article ID /articles/${article.id}
+              nav(`/articles/${article.id}`)
             }}>View</button>
           </li>
         ))}
