@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export default function ArticleForm() {
+  const nav = useNavigate();
   const [form, setForm] = useState({
     title: '',
     content: '',
@@ -15,7 +17,13 @@ export default function ArticleForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Validate form data
+    
+    try {
+      await axios.post('http://localhost:3000/articles', form);
+      nav('/');
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (

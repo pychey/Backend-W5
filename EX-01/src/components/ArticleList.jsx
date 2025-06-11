@@ -20,7 +20,11 @@ export default function ArticleList() {
   };
 
   const deleteArticle = async (id) => {
-    // Delete an article by ID
+    try {
+      await axios.delete(`http://localhost:3000/articles/${id}`);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -39,7 +43,7 @@ export default function ArticleList() {
             <small>By Journalist #{article.journalistId} | Category #{article.categoryId}</small><br />
             <button onClick={() => deleteArticle(article.id)}>Delete</button>
             <button onClick={() => {
-              // Navigate to update article form with article ID /articles/update/${article.id}
+              nav(`/update/${article.id}`)
             }}>Update</button>
             <button onClick={() => {
               nav(`/articles/${article.id}`)
